@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<!-- ==========================================
+     BASIC PAGE CONFIGURATION
+========================================== -->
+
+<meta charset="UTF-8">
+<title>YouTube Analyzer</title>
+
+<!-- Google Font -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
+
+<style>
+
+/* ==========================================
+   GLOBAL STYLING
+========================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* ==========================================
+   PAGE BACKGROUND
+========================================== */
+
+body {
+    height: 100vh;
+    background: radial-gradient(circle at top, #0f172a, #020617);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    overflow: hidden;
+}
+
+/* ==========================================
+   BACKGROUND GLOW EFFECTS
+========================================== */
+
+body::before {
+    content: "";
+    position: absolute;
+    width: 400px;
+    height: 400px;
+    background: #6366f1;
+    filter: blur(150px);
+    top: -100px;
+    left: -100px;
+}
+
+body::after {
+    content: "";
+    position: absolute;
+    width: 400px;
+    height: 400px;
+    background: #ec4899;
+    filter: blur(150px);
+    bottom: -100px;
+    right: -100px;
+}
+
+/* ==========================================
+   MAIN CARD CONTAINER
+========================================== */
+
+.container {
+    background: rgba(255,255,255,0.05);
+    backdrop-filter: blur(20px);
+    padding: 40px;
+    border-radius: 20px;
+    width: 360px;
+    text-align: center;
+    border: 1px solid rgba(255,255,255,0.1);
+    animation: fadeUp 1s ease;
+    box-shadow: 0 0 40px rgba(0,0,0,0.5);
+}
+
+/* Dashboard Icon */
+
+.icon {
+    font-size: 40px;
+    margin-bottom: 10px;
+}
+
+/* Project Title */
+
+h2 {
+    font-size: 24px;
+    background: linear-gradient(90deg, #38bdf8, #a78bfa);
+    -webkit-background-clip: text;
+    color: transparent;
+}
+
+/* Project Description */
+
+p {
+    margin-top: 10px;
+    font-size: 14px;
+    opacity: 0.7;
+}
+
+/* ==========================================
+   FILE INPUT SECTION
+========================================== */
+
+input {
+    margin-top: 20px;
+    padding: 10px;
+    width: 100%;
+    border-radius: 8px;
+    border: none;
+}
+
+/* ==========================================
+   ANALYZE BUTTON
+========================================== */
+
+button {
+    margin-top: 20px;
+    padding: 12px;
+    width: 100%;
+    border-radius: 8px;
+    border: none;
+    background: linear-gradient(90deg, #6366f1, #ec4899);
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px #6366f1;
+}
+
+/* ==========================================
+   SELECTED FILE NAME
+========================================== */
+
+.file-name {
+    margin-top: 8px;
+    font-size: 12px;
+    opacity: 0.7;
+}
+
+/* ==========================================
+   LOADING ANIMATION
+========================================== */
+
+.loader {
+    display: none;
+    margin-top: 15px;
+}
+
+.loader div {
+    width: 10px;
+    height: 10px;
+    background: #38bdf8;
+    display: inline-block;
+    margin: 3px;
+    border-radius: 50%;
+    animation: bounce 0.6s infinite alternate;
+}
+
+.loader div:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.loader div:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+/* Loading Animation */
+
+@keyframes bounce {
+    to {
+        transform: translateY(-10px);
+    }
+}
+
+/* Card Animation */
+
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- ==========================================
+     FILE UPLOAD CARD
+========================================== -->
+
+<div class="container">
+
+    <!-- Application Icon -->
+    <div class="icon">📊</div>
+
+    <!-- Project Heading -->
+    <h2>YouTube Analytics & View Prediction</h2>
+
+    <!-- Project Description -->
+    <p>
+       Upload a YouTube trending dataset and discover
+       engagement insights, viral content patterns,
+       and machine learning-based view predictions.
+    </p>
+
+    <!-- Dataset Upload Form -->
+    <form action="/analyze"
+          method="post"
+          enctype="multipart/form-data"
+          onsubmit="showLoader()">
+
+        <!-- CSV File Upload -->
+        <input type="file"
+               name="file"
+               id="fileInput"
+               required>
+
+        <!-- Selected File Name -->
+        <div class="file-name" id="fileName"></div>
+
+        <!-- Analyze Button -->
+        <button type="submit">
+            Analyze Dataset 🚀
+        </button>
+
+        <!-- Loading Indicator -->
+        <div class="loader" id="loader">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+
+    </form>
+
+</div>
+
+<script>
+
+/* ==========================================
+   DISPLAY SELECTED FILE NAME
+========================================== */
+
+document.getElementById("fileInput")
+.addEventListener("change", function() {
+
+    document.getElementById("fileName")
+    .innerText = this.files[0].name;
+});
+
+/* ==========================================
+   SHOW LOADER DURING ANALYSIS
+========================================== */
+
+function showLoader() {
+    document.getElementById("loader")
+    .style.display = "block";
+}
+
+</script>
+
+</body>
+</html>

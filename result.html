@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>YouTube Analytics Dashboard</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background: radial-gradient(circle at top, #0f172a, #020617);
+    color: white;
+    overflow-x: hidden;
+}
+
+/* ----------------------------------
+   HEADER
+---------------------------------- */
+header {
+    text-align: center;
+    padding: 20px;
+    font-size: 26px;
+    font-weight: 600;
+    background: linear-gradient(90deg, #6366f1, #ec4899);
+    -webkit-background-clip: text;
+    color: transparent;
+}
+
+/* ----------------------------------
+   MAIN CONTAINER
+---------------------------------- */
+.container {
+    padding: 20px;
+}
+
+/* ----------------------------------
+   KPI CARDS
+---------------------------------- */
+.kpi {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+}
+
+.kpi-card {
+    background: rgba(255,255,255,0.05);
+    backdrop-filter: blur(15px);
+    border-radius: 15px;
+    padding: 25px;
+    text-align: center;
+    transition: 0.4s;
+    border: 1px solid rgba(255,255,255,0.1);
+    animation: fadeUp 1s ease forwards;
+}
+
+.kpi-card:hover {
+    transform: translateY(-8px) scale(1.03);
+    box-shadow: 0 0 25px rgba(99,102,241,0.5);
+}
+
+.kpi-card h3 {
+    opacity: 0.7;
+}
+
+.kpi-card p {
+    font-size: 24px;
+    font-weight: bold;
+    margin-top: 10px;
+    color: #38bdf8;
+}
+
+/* ----------------------------------
+   CONTENT CARDS
+---------------------------------- */
+.card {
+    margin-top: 25px;
+    padding: 25px;
+    border-radius: 15px;
+    background: rgba(255,255,255,0.05);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,0.1);
+    animation: fadeUp 1s ease forwards;
+}
+
+.card h3 {
+    margin-bottom: 15px;
+    background: linear-gradient(90deg, #38bdf8, #a78bfa);
+    -webkit-background-clip: text;
+    color: transparent;
+}
+
+/* ----------------------------------
+   TABLE STYLING
+---------------------------------- */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+table th {
+    background: linear-gradient(90deg, #6366f1, #a855f7);
+    color: white;
+    padding: 10px;
+}
+
+table td {
+    padding: 10px;
+    background: rgba(255,255,255,0.05);
+    color: #e2e8f0;
+}
+
+table tr:hover td {
+    background: rgba(99,102,241,0.2);
+}
+
+/* ----------------------------------
+   GRAPH SECTION
+---------------------------------- */
+.graphs {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.graphs img {
+    width: 100%;
+    height: 300px;
+    object-fit: contain;
+    background: white;
+    padding: 10px;
+    border-radius: 12px;
+    transition: 0.4s;
+}
+
+.graphs img:hover {
+    transform: scale(1.03);
+    box-shadow: 0 0 20px #6366f1;
+}
+
+/* ----------------------------------
+   ANIMATION
+---------------------------------- */
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ----------------------------------
+   BACKGROUND GLOW EFFECT
+---------------------------------- */
+body::before {
+    content: "";
+    position: fixed;
+    width: 400px;
+    height: 400px;
+    background: #6366f1;
+    filter: blur(150px);
+    top: -100px;
+    left: -100px;
+    z-index: -1;
+}
+
+body::after {
+    content: "";
+    position: fixed;
+    width: 400px;
+    height: 400px;
+    background: #ec4899;
+    filter: blur(150px);
+    bottom: -100px;
+    right: -100px;
+    z-index: -1;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- ==================================
+     DASHBOARD HEADER
+================================== -->
+
+<header>
+🚀 YouTube Content Performance Analytics & View Prediction
+</header>
+
+<div class="container">
+
+    <!-- ==================================
+         KPI SECTION
+    ================================== -->
+
+ <div class="kpi">
+
+    <div class="kpi-card">
+        <h3>📅 Highest Engagement Day</h3>
+        <p>{{ best_day }}</p>
+    </div>
+
+    <div class="kpi-card">
+        <h3>🎯 R² Score</h3>
+        <p>{{ r2 }}%</p>
+    </div>
+    
+    <div class="kpi-card">
+        <h3>📉 Mean Absolute Error</h3>
+        <p>{{ "{:,}".format(mae) }}</p>
+    </div>
+
+    <div class="kpi-card">
+        <h3>🔥 Avg Engagement Rate</h3>
+        <p>{{ avg_engagement }}%</p>
+    </div>
+
+    <div class="kpi-card">
+        <h3>🎬 Total Videos</h3>
+        <p>{{ total_videos }}</p>
+    </div>
+
+    <div class="kpi-card">
+        <h3>👀 Total Views</h3>
+        <p>{{ "{:,}".format(total_views) }}</p>
+    </div>
+
+</div>
+
+    <!-- ==================================
+         BUSINESS INSIGHTS
+    ================================== -->
+
+    <div class="card">
+        <h3>📈 Business Insights</h3>
+
+        <ul style="line-height:2; padding-left:20px;">
+            <li>Engagement Rate is used as the primary audience interaction metric.</li>
+            <li>Upload performance is evaluated using engagement rather than upload frequency.</li>
+            <li>Machine Learning predicts future views using likes, comments, and engagement rate.</li>
+            <li>Viral videos are identified using the top 10% view threshold.</li>
+            <li>Insights help creators optimize upload strategy and content performance.</li>
+        </ul>
+    </div>
+
+    <!-- ==================================
+         TOP CATEGORY ANALYSIS
+    ================================== -->
+
+    <div class="card">
+        <h3>🔥 Top Categories by Engagement Rate</h3>
+        {{ category_table | safe }}
+    </div>
+
+    <!-- ==================================
+         TOP VIDEO ANALYSIS
+    ================================== -->
+
+    <div class="card">
+        <h3>🎬 Top Performing Videos</h3>
+        {{ video_table | safe }}
+    </div>
+
+    <!-- ==================================
+         VISUAL ANALYTICS
+    ================================== -->
+
+    <div class="card">
+
+        <h3>📊 Visual Insights & Trend Analysis</h3>
+
+        <p style="margin-bottom:15px; opacity:0.8;">
+            These visualizations highlight audience engagement,
+            content performance, viral trends, and relationships
+            between user interactions and video views.
+        </p>
+
+        <div class="graphs">
+
+            <!-- Category Engagement -->
+            <img src="/static/category.png" alt="Category Analysis">
+
+            <!-- Likes vs Views -->
+            <img src="/static/scatter.png" alt="Likes vs Views">
+
+            <!-- Best Upload Day -->
+            <img src="/static/day.png" alt="Upload Day Analysis">
+
+            <!-- Viral Video Analysis -->
+            <img src="/static/viral.png" alt="Viral Videos">
+            <!-- Actual Vs Predicted -->
+            <img src="/static/prediction.png" alt="Actual vs Predicted">
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ==================================
+     PAGE LOAD ANIMATION
+================================== -->
+
+<script>
+document.body.style.opacity = 0;
+
+window.onload = () => {
+    document.body.style.transition = "1s";
+    document.body.style.opacity = 1;
+}
+</script>
+
+</body>
+</html>
